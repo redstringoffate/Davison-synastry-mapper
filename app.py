@@ -54,7 +54,7 @@ def show_step1():
                 st.write(INPUT[idx])
                 key=f"{chart}_{idx}"
                 sign=st.selectbox("",SIGNS,key=f"{key}_sign")
-                deg =st.selectbox("°",degree_options,key=f"{key}_deg")
+                deg =st.selectbox("Degree",degree_options,key=f"{key}_deg")
                 minute=st.selectbox("′",minute_options,key=f"{key}_min")
                 st.session_state.houses[chart][idx]=(sign,deg,minute)
 
@@ -84,7 +84,7 @@ def show_step2():
             c1,c2,c3,c4=st.columns([3,2,1,1])
             name=c1.text_input("Name")
             sign=c2.selectbox("Sign",SIGNS)
-            deg=c3.selectbox("°",degree_options)
+            deg=c3.selectbox("Degree",degree_options)
             minute=c4.selectbox("′",minute_options)
             if st.form_submit_button("Add") and name.strip():
                 st.session_state.planets[chart].append(
@@ -208,3 +208,4 @@ def show_step3():
 if st.session_state.page==1: show_step1()
 elif st.session_state.page==2: show_step2()
 else: show_step3()
+
