@@ -125,8 +125,8 @@ def show_step2():
             c1,c2,c3,c4=st.columns([3,2,1,1])
             name=c1.text_input("Name", disabled=disabled)
             sign=c2.selectbox("Sign",SIGNS, disabled=disabled)
-            deg=c3.selectbox("°",degree_options, disabled=disabled)
-            minute=c4.selectbox("′",minute_options, disabled=disabled)
+            deg=c3.selectbox("Degree",degree_options, disabled=disabled)
+            minute=c4.selectbox("Minute",minute_options, disabled=disabled)
 
             if st.form_submit_button("Add") and name.strip() and not disabled:
                 st.session_state.planets[chart].append(
@@ -242,4 +242,5 @@ def show_step3():
 if st.session_state.page==1: show_step1()
 elif st.session_state.page==2: show_step2()
 else: show_step3()
+
 
