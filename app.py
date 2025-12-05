@@ -77,12 +77,12 @@ def show_step1():
                 # line 2 → degree + minute
                 cdeg, cmin = st.columns([1,1])
                 deg = cdeg.selectbox(
-                    "°", degree_options,
+                    "Degree", degree_options,
                     key=f"{prefix}_deg",
                     disabled=disabled
                 )
                 minute = cmin.selectbox(
-                    "′", minute_options,
+                    "Minute", minute_options,
                     key=f"{prefix}_min",
                     disabled=disabled
                 )
@@ -242,3 +242,4 @@ def show_step3():
 if st.session_state.page==1: show_step1()
 elif st.session_state.page==2: show_step2()
 else: show_step3()
+
