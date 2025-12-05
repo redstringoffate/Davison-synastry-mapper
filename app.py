@@ -37,6 +37,9 @@ def opposite(sign):
 # ===========================================================
 # STEP 1 — HOUSES
 # ===========================================================
+# ===========================================================
+# STEP1 — HOUSES (updated UI layout)
+# ===========================================================
 def show_step1():
     st.title("✨ Davison Synastry Mapper — Step 1: House Cusps")
 
@@ -48,7 +51,8 @@ def show_step1():
 
         if chart != "A":
             st.session_state.omit_houses[chart] = st.checkbox(
-                f"Omit House {chart}", value=st.session_state.omit_houses[chart]
+                f"Omit House {chart}", 
+                value=st.session_state.omit_houses[chart]
             )
 
         disabled = st.session_state.omit_houses[chart]
@@ -56,36 +60,47 @@ def show_step1():
         cols = st.columns(3)
         order = [0,2,4,1,3,5]
 
-        # Manual entry 1–6
         for idx in order:
-            col = cols[order.index(idx)%3]
-            with col:
-                house_input_block(chart, INPUT[idx], idx, disabled)
+            with cols[order.index(idx) % 3]:
 
-        # Auto fill 7–12
+                st.markdown(f"<b>{INPUT[idx]}</b>", unsafe_allow_html=True)
+
+                prefix = f"{chart}_{idx}"
+
+                # line 1 → sign
+                sign = st.selectbox(
+                    "", SIGNS,
+                    key=f"{prefix}_sign",
+                    disabled=disabled
+                )
+                
+                # line 2 → degree + minute
+                cdeg, cmin = st.columns([1,1])
+                deg = cdeg.selectbox(
+                    "°", degree_options,
+                    key=f"{prefix}_deg",
+                    disabled=disabled
+                )
+                minute = cmin.selectbox(
+                    "′", minute_options,
+                    key=f"{prefix}_min",
+                    disabled=disabled
+                )
+
+                st.session_state.houses[chart][idx] = (sign,deg,minute)
+
         if not disabled:
             for i in range(6):
                 base = st.session_state.houses[chart][i]
                 if base:
-                    st.session_state.houses[chart][i+6] = (opposite(base[0]), base[1], base[2])
+                    st.session_state.houses[chart][i+6] = (
+                        opposite(base[0]), base[1], base[2]
+                    )
         else:
             st.session_state.houses[chart] = [None]*12
 
-        # AUTO DISPLAY
-        st.markdown("<br><i>Auto-Generated House Opposites</i><hr>", unsafe_allow_html=True)
-
-        auto_cols = st.columns(3)
-        for j, label in enumerate(AUTO):
-            with auto_cols[j % 3]:
-                val = st.session_state.houses[chart][j+6]
-                if val:
-                    st.markdown(
-                        f"<div style='opacity:.45'><b>{label}</b><br>{ZODIAC_SYMBOL[val[0]]} {val[1]}°{val[2]}′</div>",
-                        unsafe_allow_html=True
-                    )
-
-        st.write("----")
-
+        st.markdown("---")
+    
     if st.button("➡ Step 2"):
         st.session_state.page = 2
         st.rerun()
